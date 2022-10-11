@@ -1,8 +1,9 @@
 import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Role } from "src/helpers/roles.enum";
 
 @Table
 export class Users extends Model {
-  @Column({ allowNull: false, primaryKey: true, type: DataType.UUID })
+  @Column({ allowNull: false, primaryKey: true, type: DataType.UUID, defaultValue: DataType.UUIDV4 })
   id: string
 
   @Column({ allowNull: false })
@@ -14,11 +15,14 @@ export class Users extends Model {
   @Column({ allowNull: false })
   password: string
 
-  @Column({ allowNull: false, type: DataType.ENUM, values: ["sysadmin", "admin", "customer"] })
-  role: string
+  @Column({ allowNull: false, type: DataType.ENUM, values: ["admin", "customer"] })
+  role: Role[]
 
   @Column({ allowNull: false, type: DataType.ENUM, values: ["y", "t"] })
   isActive: string
+
+  @Column
+  avatar: string
 
   @Column
   twitter: string
