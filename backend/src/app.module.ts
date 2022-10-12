@@ -6,7 +6,8 @@ import { UsersModule } from './users/users.module';
 import { Users } from './users/entities/user.entity';
 import { config } from 'dotenv';
 import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './helpers/roles.guard';
+import { PermissionGuard } from './authorization/permission.guard';
+import { JwtService } from '@nestjs/jwt';
 config();
 
 @Module({
@@ -24,9 +25,6 @@ config();
     UsersModule
   ],
   controllers: [AppController],
-  providers: [AppService, {
-    provide: APP_GUARD,
-    useClass: RolesGuard
-  }],
+  providers: [AppService, JwtService],
 })
-export class AppModule {}
+export class AppModule{}

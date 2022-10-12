@@ -1,5 +1,4 @@
 import { Column, DataType, Model, Table } from "sequelize-typescript";
-import { Role } from "src/helpers/roles.enum";
 
 @Table
 export class Users extends Model {
@@ -16,7 +15,7 @@ export class Users extends Model {
   password: string
 
   @Column({ allowNull: false, type: DataType.ENUM, values: ["admin", "customer"] })
-  role: Role[]
+  role: string
 
   @Column({ allowNull: false, type: DataType.ENUM, values: ["y", "t"] })
   isActive: string
