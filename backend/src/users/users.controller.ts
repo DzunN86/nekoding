@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, SetMetadata } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { Roles } from 'src/helpers/roles.decorator';
-import { Role } from 'src/helpers/roles.enum';
+import { PermissionGuard } from 'src/authorization/permission.guard';
+import { Role } from 'src/authorization/role.decorator';
+import { Roles } from 'src/authorization/roles.enum';
 
 @Controller({
   version: "1",
@@ -13,12 +14,12 @@ import { Role } from 'src/helpers/roles.enum';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Roles(Role.Admin)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @Role(Roles.Admin)
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
-
+    
     return {
       statusCode: 201,
       success: true,

@@ -6,6 +6,8 @@ import { Users } from './entities/user.entity';
 import { AuthController } from './auth/auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
+import { APP_GUARD } from '@nestjs/core';
+import { PermissionGuard } from 'src/authorization/permission.guard';
 
 @Module({
   imports: [
