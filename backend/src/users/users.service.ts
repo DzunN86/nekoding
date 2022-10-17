@@ -6,6 +6,7 @@ import { Users } from './entities/user.entity';
 import { hashSync } from 'bcrypt';
 import { RegisterDto } from './dto/registe.dto';
 import { Sequelize } from 'sequelize-typescript';
+import { UpdateRoleDto } from './dto/role.dto';
 
 @Injectable()
 export class UsersService {
@@ -57,7 +58,7 @@ export class UsersService {
   async findAll(limit: number, page: number, order: string): Promise<Users[]> {
     try {
       return await this.user.findAll({
-        attributes: ["name", "email", "role", "isActive", "createdAt", "updatedAt"],
+        attributes: ["id", "name", "email", "role", "isActive", "createdAt", "updatedAt"],
         limit,
         offset: limit * page - limit,
         order: [["createdAt", order]]
@@ -88,7 +89,7 @@ export class UsersService {
     }
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<void> {
     try {
       await this.user.update({
         name: updateUserDto.name,
@@ -107,6 +108,26 @@ export class UsersService {
       } else {
         throw new BadRequestException(error.message);
       }
+    }
+  }
+
+  async updateRole(id: string, roleDto: UpdateRoleDto): Promise<void> {
+    try {
+      await this.user.update({
+        role: roleDto.role
+      }, {
+        where: { id }
+      });
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async updateAvatar(id: string, avatar: string): Promise<void> {
+    try {
+      
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
   }
 

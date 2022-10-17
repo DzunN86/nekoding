@@ -6,6 +6,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { PermissionGuard } from 'src/authorization/permission.guard';
 import { Role } from 'src/authorization/role.decorator';
 import { Roles } from 'src/authorization/roles.enum';
+import { UpdateRoleDto } from './dto/role.dto';
 
 @Controller({
   version: "1",
@@ -82,6 +83,19 @@ export class UsersController {
       statusCode: 200,
       success: true,
       message: "data successfully updated"
+    }
+  }
+
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @Role(Roles.Admin)
+  @Patch(":id")
+  async changeRole(@Param("id") id: string,@Body() role: UpdateRoleDto) {
+    await this.usersService.updateRole(id, role);
+
+    return {
+      statusCode: 200,
+      success: true,
+      message: "role user successfully changed"
     }
   }
 
