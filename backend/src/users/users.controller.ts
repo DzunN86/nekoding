@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, SetMetadata } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, Query, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -18,20 +18,19 @@ export class UsersController {
   @Role(Roles.Admin)
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    const user = await this.usersService.create(createUserDto);
+    await this.usersService.create(createUserDto);
     
     return {
       statusCode: 201,
       success: true,
-      message: "user successfully created",
-      user
+      message: "user successfully created"
     }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get("profile")
   async getProfile(@Request() req) {
-    const user = await this.findOne(req.user.id);
+    const user = await this.usersService.findOne(req.user.id);
 
     return {
       statusCode: 200,
@@ -41,20 +40,49 @@ export class UsersController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
+
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @Role(Roles.Admin)
   @Get()
-  findAll(@Request() req) {
-    return req.user;
+  async findAll(@Query() query) {
+    // get data fron query params
+    const { limit = 25, page = 1, order = "desc" } = query;
+
+    // querying data
+    const users = await this.usersService.findAll(+limit, +page, order)
+    return {
+      statusCode: 200,
+      success: true,
+      message: "data users successfully retrieved",
+      users
+    }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+  @UseGuards(JwtAuthGuard, PermissionGuard)
+  @Role(Roles.Admin)
+  @Get(":id")
+  async getDetailUser(@Param("id") id: string) {
+    const user = await this.usersService.findOne(id);
+
+    return {
+      statusCode: 200,
+      success: true,
+      message: "detail user successfully retrieved",
+      user
+    }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @UseGuards(JwtAuthGuard)
+  @Put()
+  async update(@Request() req, @Body() updateUserDto: UpdateUserDto) {
+    // querying
+    await this.usersService.update(req.user.id, updateUserDto); 
+  
+    return {
+      statusCode: 200,
+      success: true,
+      message: "data successfully updated"
+    }
   }
 
   @Delete(':id')

@@ -6,12 +6,13 @@ import { Users } from './entities/user.entity';
 import { AuthController } from './auth/auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
-import { APP_GUARD } from '@nestjs/core';
-import { PermissionGuard } from 'src/authorization/permission.guard';
+import { SeederModule } from 'nestjs-sequelize-seeder';
+import { SeedUsers } from './seeder/users.seeder';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([Users]),
+    SeederModule.forFeature([SeedUsers]),
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
       signOptions: {

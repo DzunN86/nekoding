@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UnauthorizedException } from "@nestjs/common";
+import { Body, Controller, HttpCode, Post, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { compareSync } from "bcrypt";
 import { LoginDto } from "../dto/login.dto";
@@ -17,20 +17,21 @@ export class AuthController {
 
   @Post("register")
   async register(@Body() registerDto: RegisterDto) {
-    const user = await this.userService.register(registerDto);
+    await this.userService.register(registerDto);
 
     return {
       statusCode: 201,
       success: true,
-      message: "user successfully registered",
-      user
+      message: "user successfully registered"
     }
   }
 
+  @HttpCode(200)
   @Post("login")
   async login(@Body() loginDto: LoginDto) {
     const user = await this.userService.findEmail(loginDto.email);
 
+    // return match
     if (!user) {
       throw new UnauthorizedException("email or password wrong !!!");
     } else if (!compareSync(loginDto.password, user.password)) {

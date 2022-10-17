@@ -1,33 +1,42 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { randomUUID } from 'crypto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Users } from './entities/user.entity';
 import { hashSync } from 'bcrypt';
 import { RegisterDto } from './dto/registe.dto';
+import { Sequelize } from 'sequelize-typescript';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(Users) private user: typeof Users
+    @InjectModel(Users) private user: typeof Users,
+    private sequelize: Sequelize
   ){
     this.user.beforeCreate(user => {
       user.password = hashSync(user.password, 10)
     });
   }
 
-  async create(createUserDto: CreateUserDto): Promise<Users> {
+  async create(createUserDto: CreateUserDto): Promise<void> {
     try {
-      return await this.user.create({
-        name: createUserDto.name,
-        email: createUserDto.email,
-        password: createUserDto.password,
-        role: createUserDto.role,
-        isActive: createUserDto.isActive
-      });
+      await this.sequelize.transaction(async t => {
+        await this.user.create({
+          name: createUserDto.name,
+          email: createUserDto.email,
+          password: createUserDto.password,
+          role: createUserDto.role,
+          isActive: createUserDto.isActive
+        }, {
+          transaction: t
+        });
+      })
     } catch (error) {
-      throw new BadRequestException(error.message);
+      if (error.name == "SequelizeUniqueConstraintError") {
+        throw new BadRequestException("User already exists !!");
+      } else {
+        throw new BadRequestException(error.message);
+      }
     }
   }
 
@@ -45,8 +54,17 @@ export class UsersService {
     }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(limit: number, page: number, order: string): Promise<Users[]> {
+    try {
+      return await this.user.findAll({
+        attributes: ["name", "email", "role", "isActive", "createdAt", "updatedAt"],
+        limit,
+        offset: limit * page - limit,
+        order: [["createdAt", order]]
+      });
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   async findEmail(email: string): Promise<Users> {
@@ -70,8 +88,26 @@ export class UsersService {
     }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    try {
+      await this.user.update({
+        name: updateUserDto.name,
+        email: updateUserDto.email,
+        isActive: updateUserDto.isActive,
+        twitter: updateUserDto.twitter,
+        facebook: updateUserDto.facebook,
+        instagram: updateUserDto.instagram,
+        github: updateUserDto.github,
+      }, {
+        where: { id }
+      });
+    } catch (error) {
+      if (error.name == "SequelizeUniqueConstraintError") {
+        throw new BadRequestException("User already exists !!");
+      } else {
+        throw new BadRequestException(error.message);
+      }
+    }
   }
 
   remove(id: number) {
