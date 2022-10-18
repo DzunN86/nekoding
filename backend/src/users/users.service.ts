@@ -125,7 +125,11 @@ export class UsersService {
 
   async updateAvatar(id: string, avatar: string): Promise<void> {
     try {
-      
+      await this.user.update({
+        avatar
+      }, {
+        where: { id }
+      });
     } catch (error) {
       throw new BadRequestException(error.message);
     }
