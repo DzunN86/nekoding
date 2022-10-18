@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, Query, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, Query, Put, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -7,6 +7,7 @@ import { PermissionGuard } from 'src/authorization/permission.guard';
 import { Role } from 'src/authorization/role.decorator';
 import { Roles } from 'src/authorization/roles.enum';
 import { UpdateRoleDto } from './dto/role.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller({
   version: "1",
@@ -86,6 +87,13 @@ export class UsersController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor("avatar"))
+  @Patch("avatar")
+  async changeAvatar(@Request() req, @UploadedFile() file: Express.Multer.File) {
+    return file.path;
+  }
+
   @UseGuards(JwtAuthGuard, PermissionGuard)
   @Role(Roles.Admin)
   @Patch(":id")
@@ -98,6 +106,7 @@ export class UsersController {
       message: "role user successfully changed"
     }
   }
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {
