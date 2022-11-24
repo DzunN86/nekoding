@@ -15,7 +15,7 @@ export default function Home() {
           <Hero />
         </div>
       </div>
-      <div className="h-full blur-lg">
+      <div className="h-full">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio pariatur
         provident repellat magnam neque nulla doloremque sint ex, aperiam
         quibusdam, sunt quod consectetur inventore soluta, repellendus

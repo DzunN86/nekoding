@@ -72,7 +72,7 @@ export default function NavBar() {
         </div>
       </nav>
       {/* Responsive Menu */}
-      <div className="absolute top-0 right-0 mr-10 mt-16 h-[350px] w-[300px] bg-slate-600 p-3 shadow-lg sm:mr-5 lg:hidden">
+      {/* <div className="absolute top-0 right-0 mr-10 mt-16 h-[350px] w-[300px] bg-slate-600 p-3 shadow-lg sm:mr-5 lg:hidden">
         <div className="flex h-full flex-col justify-evenly">
           {menuState.map((item, index) => (
             <div
@@ -90,7 +90,7 @@ export default function NavBar() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

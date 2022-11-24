@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <div className="flex h-screen w-full items-center justify-center font-poppins blur-lg">
+    <div className="flex h-screen w-full items-center justify-center font-poppins">
       <div className="flex w-full items-center justify-between px-[155px]">
         <div className="flex flex-col">
           <div className="mb-9 max-w-xl text-6xl font-bold text-white">
