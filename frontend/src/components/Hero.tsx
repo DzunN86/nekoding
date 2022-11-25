@@ -29,7 +29,7 @@ export default function Hero() {
         </div>
         <div className="mt-24 text-2xl font-semibold text-white">
           <Image
-            src="/assets/illustration.svg"
+            src="/assets/Illustration.svg"
             alt="Nekoding Logo"
             width={410}
             height={472}
