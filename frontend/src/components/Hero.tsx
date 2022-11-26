@@ -31,6 +31,7 @@ export default function Hero() {
           <Image
             src="/assets/Illustration.svg"
             alt="Nekoding Logo"
+            priority
             width={410}
             height={472}
           />
