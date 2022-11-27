@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { useScrollPosition } from "../hooks/useScrollPosition";
 import menuSchema from "../routes/menuSchema";
+import DropdownMenu from "./DropdownMenu";
 
 export default function NavBar() {
   const scrollPosition = useScrollPosition();
@@ -72,7 +73,7 @@ export default function NavBar() {
             >
               Register
             </a>
-            <svg
+            {/* <svg
               width="24"
               height="24"
               fill="none"
@@ -87,7 +88,8 @@ export default function NavBar() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               ></path>
-            </svg>
+            </svg> */}
+            <DropdownMenu />
           </div>
         </div>
       </nav>
@@ -113,8 +115,8 @@ export default function NavBar() {
               d="M0 0L10 10M10 0L0 10"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
+              strokeWidth="2"
+              strokeLinecap="round"
             ></path>
           </svg>
         </button>
