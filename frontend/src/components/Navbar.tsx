@@ -25,46 +25,45 @@ export default function NavBar() {
   return (
     <>
       <nav
-        className={`sticky top-0 w-full font-poppins transition duration-300 ${
-          scrollPosition > 0
-            ? "border-b border-transparent border-opacity-0 bg-slate-900 shadow-lg backdrop-blur"
-            : "border-b border-gray-400 border-opacity-20 bg-transparent"
-        }`}
+        className={`sticky top-0 w-full font-poppins transition duration-300 ${scrollPosition > 0
+          ? "bg-slate-900 shadow-lg backdrop-blur"
+          : "bg-transparent"
+          }`}
       >
-        <div className="flex justify-between py-3 px-10 sm:px-4 md:items-center md:px-10 xl:px-[155px]">
-          <div className=" flex items-center justify-between py-3 md:py-5">
+        <div className="flex justify-between py-3 px-10 md:items-center md:px-10 xl:px-[155px]">
+          <div className="flex items-center justify-between py-3 md:py-5">
+            <Image
+              src="/assets/logo-text.svg"
+              alt="Nekoding Logo"
+              width={150}
+              height={50}
+              className="mr-5"
+            />
             <div className="flex justify-between">
-              <Image
-                src="/assets/logo-text.svg"
-                alt="Nekoding Logo"
-                width={150}
-                height={50}
-                className="mr-5"
-              />
+              <div className="lg:flex hidden items-center">
 
-              <div className="flex items-center">
-                <div className="hidden lg:flex">
-                  {menuState.map((item, index) => (
-                    <div
-                      key={index}
-                      className={`cursor-pointer px-3 py-2 text-sm font-normal tracking-[1.5px] transition duration-300
-                    ${
-                      item.active
+                {menuState.map((item, index) => (
+                  <div
+                    key={index}
+                    className={`cursor-pointer px-3 py-2 text-sm font-normal tracking-[1.5px] transition duration-300
+                    ${item.active
                         ? "font-semibold text-white"
                         : "font-semibold text-gray-500 hover:text-white"
-                    }
+                      }
                     `}
-                      onClick={() => setActive(index)}
-                    >
-                      {item.name}
-                    </div>
-                  ))}
-                </div>
+                    onClick={() => setActive(index)}
+                  >
+                    {item.name}
+                  </div>
+                ))}
+
               </div>
             </div>
           </div>
-          <div className="mt-2 flex h-full min-w-[250px] items-center justify-around text-base font-semibold text-white sm:mt-2 lg:mt-0">
-            <a href="#" className="text-center">
+          <DropdownMenu />
+
+          <div className="mt-2 hidden h-full min-w-[250px] items-center justify-around text-base font-semibold text-white sm:mt-2 lg:mt-0 lg:flex">
+            <a href="#" className="text-center hover:bg-black bg-opacity-20 px-8 py-2 rounded-lg">
               Login
             </a>
             <a
@@ -73,23 +72,6 @@ export default function NavBar() {
             >
               Register
             </a>
-            {/* <svg
-              width="24"
-              height="24"
-              fill="none"
-              className={`flex cursor-pointer lg:hidden `}
-              aria-hidden="true"
-              onClick={show}
-            >
-              <path
-                d="M12 6v.01M12 12v.01M12 18v.01M12 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm0 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></path>
-            </svg> */}
-            <DropdownMenu />
           </div>
         </div>
       </nav>
@@ -126,11 +108,10 @@ export default function NavBar() {
             <div
               key={index}
               className={`cursor-pointer rounded-md py-4 px-3 text-sm font-medium tracking-[1.5px] transition duration-300
-                    ${
-                      item.active
-                        ? "rounded-md font-semibold text-white"
-                        : "font-semibold text-gray-500 hover:text-white"
-                    }
+                    ${item.active
+                  ? "rounded-md font-semibold text-white"
+                  : "font-semibold text-gray-500 hover:text-white"
+                }
                     `}
               onClick={() => setActive(index)}
             >

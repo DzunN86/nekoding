@@ -14,10 +14,10 @@ export default function DropdownMenu(props: any) {
   return (
     <Menu
       as="div"
-      className={`relative inline-block cursor-pointer text-left lg:hidden`}
+      className={`relative items-center cursor-pointer text-left lg:hidden my-4`}
     >
       <div>
-        <Menu.Button className="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+        <Menu.Button className="inline-flex w-full justify-center rounded-md hover:bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -43,14 +43,13 @@ export default function DropdownMenu(props: any) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right  rounded-md bg-slate-800 p-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-slate-800 p-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           {menuState.map((item, index) => (
             <Menu.Item key={index}>
               {({ active }) => (
                 <button
-                  className={`${
-                    active ? "bg-slate-900" : ""
-                  } group flex w-full items-center rounded-md px-4 py-2 text-sm text-white`}
+                  className={`${active ? "bg-slate-900" : ""
+                    } group flex w-full items-center rounded-md px-4 py-2 text-sm text-white`}
                   onClick={() => setActive(index)}
                 >
                   {item.name}
@@ -58,6 +57,28 @@ export default function DropdownMenu(props: any) {
               )}
             </Menu.Item>
           ))}
+          {/* Divider */}
+          <div className="border-t border-slate-700 my-2"></div>
+          <Menu.Item>
+            {({ active }) => (
+              <button
+                className={`${active ? "bg-slate-900" : ""
+                  } group flex w-full items-center rounded-md px-4 py-2 text-sm text-white`}
+              >
+                Login
+              </button>
+            )}
+          </Menu.Item>
+          <Menu.Item>
+            {({ active }) => (
+              <button
+                className={`${active ? "bg-slate-900" : ""
+                  } group flex w-full items-center rounded-md px-4 py-2 text-sm text-white`}
+              >
+                Register
+              </button>
+            )}
+          </Menu.Item>
         </Menu.Items>
       </Transition>
     </Menu>
